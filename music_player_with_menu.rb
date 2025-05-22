@@ -121,10 +121,11 @@ end
   # genre should be a string
   def display_albums_by_genre(albums)
     puts("Genre options:")
-    puts("1. Pop")
-    puts("2. Classic")
-    puts("3. Jazz")
-    puts("4. Rock")
+    i = 1
+    while i < $genre_names.length
+      printf("%i. %s\n", i, $genre_names[i])
+      i += 1
+    end
     genre_id = read_integer_in_range("Please enter value", 1, 4)
     i = 0
     count = 0
@@ -140,24 +141,30 @@ end
     end
   end
 
-  def select_album_to_play(albums)
-    puts("Select album to play")
-    i = 0
+  def album_options(albums)
+        i = 0
     while i < albums.length
       printf("%i. %s - %s\n", i, albums[i].artist, albums[i].title)
       i += 1
     end
+  end
+
+  def track_options(tracks)
+    i = 0
+      while i < tracks.length
+        printf("%i. %s\n", i, tracks[i].name)
+        i += 1
+      end
+  end
+
+  def select_album_to_play(albums)
+    album_options(albums)
     album_id = read_integer_in_range("Enter album number", 0, albums.length-1)
     if albums[album_id].tracks.length == 0
       puts("Album is empty")
     else
-      puts("Select track to play")
-      i = 0
-      while i < albums[album_id].tracks.length
-        printf("%i. %s\n", i, albums[album_id].tracks[i].name)
-        i += 1
-      end
-      track_id = read_integer_in_range("Enter track number", 0, albums[album_id].tracks.length-1)
+      track_options(albums[album_id])
+      track_id = read_integer_in_range("Select track to play", 0, albums[album_id].tracks.length-1)
       play_track(albums[album_id], track_id)
     end
     puts("\n")
